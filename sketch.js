@@ -1,16 +1,25 @@
 var g = 0.1;
 var drops = [];
-// var puddle = [];
+var ground = [];
+// var txt;
+// var tick;
+
+// function preload() {
+//   txt = loadStrings(lyrics);
+// }
 
 function setup() {
   //create full window canvas and fill with drops
-  createCanvas(windowWidth, windowHeight);
-  for (i = 0; i < 2000; ++i) {
+  createCanvas(400, 400) //windowWidth, windowHeight);
+  ellipseMode(CENTER);
+  noFill();
+  for (i = 0; i < width * 2; ++i) {
     drops[i] = new drop();
   }
 }
 
 function draw() {
+  // ++tick;
   background(220, 220, 255);
   stroke(130, 40, 230);
   //for all drops & update location
@@ -19,15 +28,26 @@ function draw() {
     drops[i].show();
     //if drop passes out of screen splash
     if (drops[i].y > height) {
-      // puddle[i].splish();
       drops[i].splash();
     }
   }
+  for (i in ground) {
+    ground[i].splish();
+  }
+  // lyrics();
 }
 
-// function puddle() {
-//   this.x =
-// }
+function puddle(x, z) {
+  // puddle formed at x scaled by z
+  this.x = x;
+  this.scaleCount = 2 * z;
+  this.splish = function() {
+    //show puddle as sphere of increasing size
+    ellipse(this.x, height - 1, 8 - this.scaleCount);
+    if (this.scaleCount >= 0) --this.scaleCount;
+    else ground.pop();
+  }
+}
 
 function drop() {
   //new drops at random location above screen
@@ -44,7 +64,7 @@ function drop() {
   this.show = function() {
     //drops are lines with weight z
     strokeWeight(this.z);
-    line(this.x, this.y, this.x + this.drift, this.y + this.length)
+    line(this.x, this.y, this.x + this.drift, this.y + this.length);
   }
 
   this.fall = function() {
@@ -64,6 +84,13 @@ function drop() {
     //reset drop above viewpane
     this.y = random(-500, -10);
     this.accel = 0.1;
-    //puddle.push(splish(this.x);
+    ground.push(new puddle(this.x, this.z));
   }
 }
+
+// function lyrics() {
+//   textSize(32);
+//   fill(0);
+//   text(txt[tick], width / 2, height / 2)
+//   noFill();
+// }
