@@ -1,17 +1,19 @@
 var g = 0.1;
 var drops = [];
 var ground = [];
-// var txt;
-// var tick;
+var txt = [];
+var tick = 0;
 
-// function preload() {
-//   txt = loadStrings(lyrics);
-// }
+function preload() {
+  txt = loadStrings("lyrics.txt");
+}
 
 function setup() {
   //create full window canvas and fill with drops
-  createCanvas(400, 400) //windowWidth, windowHeight);
+  createCanvas(600, 400) //windowWidth, windowHeight);
   ellipseMode(CENTER);
+  textAlign(CENTER);
+  textSize(width / 20);
   noFill();
   for (i = 0; i < width * 2; ++i) {
     drops[i] = new drop();
@@ -19,7 +21,6 @@ function setup() {
 }
 
 function draw() {
-  // ++tick;
   background(220, 220, 255);
   stroke(130, 40, 230);
   //for all drops & update location
@@ -34,7 +35,17 @@ function draw() {
   for (i in ground) {
     ground[i].splish();
   }
-  // lyrics();
+  noStroke();
+  fill(255);
+  text(txt[tick], width / 2, height / 2);
+  noFill();
+  stroke(130, 40, 230);
+}
+
+function mouseClicked() {
+  // advance lyrics on click
+  ++tick;
+  tick = tick % 35;
 }
 
 function puddle(x, z) {
@@ -87,10 +98,3 @@ function drop() {
     ground.push(new puddle(this.x, this.z));
   }
 }
-
-// function lyrics() {
-//   textSize(32);
-//   fill(0);
-//   text(txt[tick], width / 2, height / 2)
-//   noFill();
-// }
